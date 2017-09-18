@@ -2,8 +2,6 @@ package com.db.awmd.challenge;
 
 import com.db.awmd.challenge.domain.Account;
 import com.db.awmd.challenge.service.AccountsService;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
@@ -104,36 +101,5 @@ public class AccountsControllerTest {
       .andExpect(status().isOk())
       .andExpect(
         content().string("{\"accountId\":\"" + uniqueAccountId + "\",\"balance\":123.45}"));
-  }
-
-  @Test
-  public void getAccounts() throws Exception {
-    String uniqueAccountId1 = "Id_1-" + System.currentTimeMillis();
-    Account account1 = new Account(uniqueAccountId1, new BigDecimal("100"));
-
-    this.accountsService.createAccount(account1);
-
-    String uniqueAccountId2 = "Id_2-" + System.currentTimeMillis();
-    Account account2 = new Account(uniqueAccountId2, new BigDecimal("200"));
-
-    this.accountsService.createAccount(account2);
-
-    MvcResult result = this.mockMvc.perform(get("/v1/accounts/")).andExpect(status().isOk()).andReturn();
-
-    JSONArray accountJSON = new JSONArray(result.getResponse().getContentAsString());
-    JSONObject accountJSON1 = (JSONObject) accountJSON.get(0);
-    JSONObject accountJSON2 = (JSONObject) accountJSON.get(1);
-
-    if (accountJSON1.getString("accountId").equals(uniqueAccountId2)) {
-      accountJSON1 = accountJSON2;
-      accountJSON2 = (JSONObject) accountJSON.get(0);
-    }
-
-    assertThat(accountJSON1.getString("accountId")).isEqualTo(uniqueAccountId1);
-    assertThat(accountJSON1.getLong("balance")).isEqualTo(100L);
-
-    assertThat(accountJSON2.getString("accountId")).isEqualTo(uniqueAccountId2);
-    assertThat(accountJSON2.getLong("balance")).isEqualTo(200L);
-
   }
 }

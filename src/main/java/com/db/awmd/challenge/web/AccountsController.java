@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/v1/accounts")
@@ -26,8 +25,7 @@ public class AccountsController {
   }
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-  public @ResponseBody
-  ResponseEntity<Object> createAccount(@RequestBody @Valid Account account) {
+  public ResponseEntity<Object> createAccount(@RequestBody @Valid Account account) {
     log.info("Creating account {}", account);
 
     try {
@@ -36,19 +34,13 @@ public class AccountsController {
       return new ResponseEntity<>(daie.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    return new ResponseEntity<>(account, HttpStatus.CREATED);
+    return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
   @GetMapping(path = "/{accountId}")
   public Account getAccount(@PathVariable String accountId) {
     log.info("Retrieving account for id {}", accountId);
     return this.accountsService.getAccount(accountId);
-  }
-
-  @GetMapping
-  public @ResponseBody
-  List<Account> getAccounts() {
-    return this.accountsService.getAccount();
   }
 
 }

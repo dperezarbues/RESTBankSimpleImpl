@@ -30,7 +30,7 @@ public class TransfersServiceTest {
   private AccountsService accountsService;
 
   @Before
-  public void prepareAccounts(){
+  public void prepareAccounts() {
 
     // Reset the existing accounts before each test.
     accountsService.getAccountsRepository().clearAccounts();
@@ -46,8 +46,8 @@ public class TransfersServiceTest {
 
   @Test
   public void createTransfer() throws Exception {
-    Transfer transfer = new Transfer("ID-Sender","ID-Receiver", new BigDecimal(100));
-    Long transferId= transfer.getTransferId();
+    Transfer transfer = new Transfer("ID-Sender", "ID-Receiver", new BigDecimal(100));
+    Long transferId = transfer.getTransferId();
     this.transfersService.createTransfer(transfer);
 
     assertThat(this.transfersService.getTransfer(transferId).getAmount()).isEqualTo(new BigDecimal(100));
@@ -62,8 +62,8 @@ public class TransfersServiceTest {
 
   @Test
   public void executeTransfer() throws Exception {
-    Transfer transfer = new Transfer("ID-Sender","ID-Receiver", new BigDecimal(100));
-    Long transferId= transfer.getTransferId();
+    Transfer transfer = new Transfer("ID-Sender", "ID-Receiver", new BigDecimal(100));
+    Long transferId = transfer.getTransferId();
     this.transfersService.createTransfer(transfer);
     this.transfersService.executeTransfer(transfer);
 
@@ -79,15 +79,15 @@ public class TransfersServiceTest {
 
   @Test
   public void createDuplicatedTransfer() throws Exception {
-    Transfer transfer = new Transfer("ID-Sender","ID-Receiver", new BigDecimal(100));
-    Long transferId= transfer.getTransferId();
+    Transfer transfer = new Transfer("ID-Sender", "ID-Receiver", new BigDecimal(100));
+    Long transferId = transfer.getTransferId();
 
     try {
       this.transfersService.createTransfer(transfer);
       this.transfersService.createTransfer(transfer);
       fail("Should have failed when trying to transfer more funds than available");
     } catch (DuplicateTransferIdException ex) {
-      assertThat(ex.getMessage()).isEqualTo("Transfer id "+transferId+" already exists!");
+      assertThat(ex.getMessage()).isEqualTo("Transfer id " + transferId + " already exists!");
     }
 
     assertThat(this.transfersService.getTransfer(transferId).getAmount()).isEqualTo(new BigDecimal(100));
@@ -102,8 +102,8 @@ public class TransfersServiceTest {
 
   @Test
   public void executeTransferNoFunds() throws Exception {
-    Transfer transfer = new Transfer("ID-Sender","ID-Receiver", new BigDecimal(1100));
-    Long transferId= transfer.getTransferId();
+    Transfer transfer = new Transfer("ID-Sender", "ID-Receiver", new BigDecimal(1100));
+    Long transferId = transfer.getTransferId();
 
     try {
       this.transfersService.createTransfer(transfer);
@@ -126,8 +126,8 @@ public class TransfersServiceTest {
 
   @Test
   public void createNotExistingAccountTransfer() throws Exception {
-    Transfer transfer = new Transfer("NOT_EXISTS","ID-Receiver", new BigDecimal(100));
-    Long transferId= transfer.getTransferId();
+    Transfer transfer = new Transfer("NOT_EXISTS", "ID-Receiver", new BigDecimal(100));
+    Long transferId = transfer.getTransferId();
 
     try {
       this.transfersService.createTransfer(transfer);
@@ -146,10 +146,11 @@ public class TransfersServiceTest {
     assertThat(this.accountsService.getAccount("ID-Receiver").getBalance()).isEqualTo(new BigDecimal(1000));
     assertThat(this.accountsService.getAccount("ID-Sender").getBalance()).isEqualTo(new BigDecimal(1000));
   }
+
   @Test
   public void executeTwiceTransfer() throws Exception {
-    Transfer transfer = new Transfer("ID-Sender","ID-Receiver", new BigDecimal(100));
-    Long transferId= transfer.getTransferId();
+    Transfer transfer = new Transfer("ID-Sender", "ID-Receiver", new BigDecimal(100));
+    Long transferId = transfer.getTransferId();
 
     try {
       this.transfersService.createTransfer(transfer);

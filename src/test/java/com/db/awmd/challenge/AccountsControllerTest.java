@@ -121,12 +121,12 @@ public class AccountsControllerTest {
     MvcResult result = this.mockMvc.perform(get("/v1/accounts/")).andExpect(status().isOk()).andReturn();
 
     JSONArray accountJSON = new JSONArray(result.getResponse().getContentAsString());
-    JSONObject accountJSON1 = (JSONObject)accountJSON.get(0);
-    JSONObject accountJSON2 = (JSONObject)accountJSON.get(1);
+    JSONObject accountJSON1 = (JSONObject) accountJSON.get(0);
+    JSONObject accountJSON2 = (JSONObject) accountJSON.get(1);
 
-    if (accountJSON1.getString("accountId").equals(uniqueAccountId2)){
-      accountJSON1=accountJSON2;
-      accountJSON2=(JSONObject)accountJSON.get(0);
+    if (accountJSON1.getString("accountId").equals(uniqueAccountId2)) {
+      accountJSON1 = accountJSON2;
+      accountJSON2 = (JSONObject) accountJSON.get(0);
     }
 
     assertThat(accountJSON1.getString("accountId")).isEqualTo(uniqueAccountId1);

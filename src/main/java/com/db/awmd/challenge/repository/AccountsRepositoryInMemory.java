@@ -34,8 +34,8 @@ public class AccountsRepositoryInMemory implements AccountsRepository {
   }
 
   @Override
-  public List<Account> getAccount(){
-    return new ArrayList<Account>(accounts.values());
+  public List<Account> getAccount() {
+    return new ArrayList<>(accounts.values());
   }
 
 }

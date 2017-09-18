@@ -34,8 +34,8 @@ public class TransfersRepositoryInMemory implements TransfersRepository {
   }
 
   @Override
-  public List<Transfer> getTransfer(){
-    return new ArrayList<Transfer>(transfers.values());
+  public List<Transfer> getTransfer() {
+    return new ArrayList<>(transfers.values());
   }
 
 }

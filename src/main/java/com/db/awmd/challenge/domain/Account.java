@@ -28,23 +28,23 @@ public class Account {
 
   @JsonCreator
   public Account(@JsonProperty("accountId") String accountId,
-    @JsonProperty("balance") BigDecimal balance) {
+                 @JsonProperty("balance") BigDecimal balance) {
     this.accountId = accountId;
     this.balance = balance;
   }
 
-  synchronized void withdraw (BigDecimal amount) {
+  public synchronized void withdraw(BigDecimal amount) {
 
     if (balance.compareTo(amount) >= 0) {
       //log.info("Retrieving account for id {}", accountId);
-      balance=balance.subtract(amount);
+      balance = balance.subtract(amount);
     } else {
       throw new InsufficientFundsException("Account id: " + accountId + " does not have enough funds available!");
     }
   }
 
-  synchronized void deposit (BigDecimal amount) {
-    balance=balance.add(amount);
+  public synchronized void deposit(BigDecimal amount) {
+    balance = balance.add(amount);
   }
 
 }

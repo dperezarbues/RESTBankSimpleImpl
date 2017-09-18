@@ -32,7 +32,8 @@ public class TransfersController {
   }
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-  public @ResponseBody ResponseEntity<Resource<Transfer>> executeTransfer(@RequestBody @Valid Transfer transfer ) {
+  public @ResponseBody
+  ResponseEntity<Resource<Transfer>> executeTransfer(@RequestBody @Valid Transfer transfer) {
     log.info("Creating transfer {}", transfer);
 
     try {
@@ -47,7 +48,8 @@ public class TransfersController {
   }
 
   @GetMapping(path = "/{transferId}")
-  public @ResponseBody Resource<Transfer> getTransfer(@PathVariable Long transferId) {
+  public @ResponseBody
+  Resource<Transfer> getTransfer(@PathVariable Long transferId) {
     log.info("Retrieving transfer for id {}", transferId);
 
     return buildTransferResource(this.transfersService.getTransfer(transferId));
@@ -56,16 +58,16 @@ public class TransfersController {
   @GetMapping
   public @ResponseBody
   List<Resource<Transfer>> getTransfers() {
-    List<Resource<Transfer>> resources = new ArrayList<Resource<Transfer>>();
-    for (Transfer transfer:this.transfersService.getTransfer()){
+    List<Resource<Transfer>> resources = new ArrayList<>();
+    for (Transfer transfer : this.transfersService.getTransfer()) {
       resources.add(buildTransferResource(transfer));
     }
     return resources;
   }
 
 
-  private Resource<Transfer> buildTransferResource (Transfer transfer){
-    Resource<Transfer> resource = new Resource<Transfer>(transfer);
+  private Resource<Transfer> buildTransferResource(Transfer transfer) {
+    Resource<Transfer> resource = new Resource<>(transfer);
     resource.add(linkTo(methodOn(TransfersController.class).getTransfer(transfer.getTransferId())).withSelfRel());
     resource.add(linkTo(methodOn(AccountsController.class).getAccount(transfer.getReceiverAccountId())).withRel("receiver"));
     resource.add(linkTo(methodOn(AccountsController.class).getAccount(transfer.getSenderAccountId())).withRel("sender"));

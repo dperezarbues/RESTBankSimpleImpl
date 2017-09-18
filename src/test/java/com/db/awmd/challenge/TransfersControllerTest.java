@@ -68,7 +68,7 @@ public class TransfersControllerTest {
     accountsService.getAccountsRepository().clearAccounts();
 
     // Reset the existing accounts before each test.
-    transfersService.getTransfersRepository().clearTransfers();
+    transfersService.clearTransfers();
 
     // Create two accounts for transferring funds between them
     this.mockMvc.perform(post("/v1/accounts").contentType(MediaType.APPLICATION_JSON)

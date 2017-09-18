@@ -3,9 +3,7 @@ package com.db.awmd.challenge.service;
 import com.db.awmd.challenge.domain.Account;
 import com.db.awmd.challenge.domain.Transfer;
 import com.db.awmd.challenge.exception.AccountNotFoundException;
-import com.db.awmd.challenge.repository.AccountsRepository;
 import com.db.awmd.challenge.repository.TransfersRepository;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,26 +12,23 @@ import java.util.List;
 @Service
 public class TransfersService {
 
-  @Getter
-  private final AccountsRepository accountsRepository;
+  private final AccountsService accountsService;
 
-  @Getter
   private final TransfersRepository transfersRepository;
 
-  @Getter
   private final NotificationService notificationService;
 
   @Autowired
-  public TransfersService(AccountsRepository accountsRepository, TransfersRepository transfersRepository, NotificationService notificationService) {
-    this.accountsRepository = accountsRepository;
+  public TransfersService(AccountsService accountsService, TransfersRepository transfersRepository, NotificationService notificationService) {
+    this.accountsService = accountsService;
     this.transfersRepository = transfersRepository;
     this.notificationService = notificationService;
   }
 
   public void executeTransfer(Transfer transfer) {
 
-    Account senderAccount = this.accountsRepository.getAccount(transfer.getSenderAccountId());
-    Account receiverAccount = this.accountsRepository.getAccount(transfer.getReceiverAccountId());
+    Account senderAccount = this.accountsService.getAccount(transfer.getSenderAccountId());
+    Account receiverAccount = this.accountsService.getAccount(transfer.getReceiverAccountId());
 
     try {
       if (transfer.getStatus() == Transfer.Status.PENDING) {
@@ -78,4 +73,9 @@ public class TransfersService {
   public List<Transfer> getTransfer() {
     return this.transfersRepository.getTransfer();
   }
+
+  public void clearTransfers() {
+    this.transfersRepository.clearTransfers();
+  }
+
 }
